@@ -16,8 +16,8 @@ import scalaj.http.Http
   */
 object InstragramAuth {
 
-  val client_id: String = "d2cff4a52524420da45e2f9a967332a5"
-  val client_secret: String = "cd8e17532a464edaba2c3b996dc3c8a4"
+  val client_id: String = "//"
+  val client_secret: String = "//"
 
   def auth(name: String, password: String, authenticated: String => Unit): Unit = {
 
