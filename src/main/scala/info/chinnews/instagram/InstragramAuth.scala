@@ -16,11 +16,20 @@ import scalaj.http.Http
   */
 object InstragramAuth {
 
-  val client_id: String = "//"
-  val client_secret: String = "//"
+  val client_id: String = ""
+  val client_secret: String = ""
 
-  def auth(name: String, password: String, authenticated: String => Unit): Unit = {
+  class FailureListener {
+    var listeners: List[Exception => Unit] = Nil
+    def listen(listener: Exception => Unit): Unit = {
+      listeners ::= listener
+    }
+    def notify(e: Exception) = for (l <- listeners) l(e)
+  }
 
+  def auth(name: String, password: String, authenticated: (String, FailureListener) => Unit): Unit = {
+
+    val failureListener = new FailureListener
     var server: Server = null
     val service = HttpService {
       case req@Method.GET -> Root =>
@@ -36,13 +45,12 @@ object InstragramAuth {
 
           val access_token = Parse.parseWith(body, _.field("access_token").flatMap(_.string).get, msg => msg)
 
-          authenticated(access_token.toString)
+          failureListener.listen( e => instagramLogin())
+          authenticated(access_token.toString, failureListener)
         }
         catch {
           case e: Exception => println("exception caught: " + e);
         }
-        Thread.sleep(20000)
-        instagramLogin()
         Ok("result")
     }
 
@@ -56,6 +64,7 @@ object InstragramAuth {
   }
 
   def instagramLogin(): Unit = {
+    Thread.sleep(20000)
     Desktop.getDesktop.browse(new URI(
       "https://api.instagram.com/oauth/authorize/?" +
         s"client_id=$client_id&redirect_uri=http://localhost:8080&response_type=code"))
