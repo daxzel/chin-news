@@ -1,15 +1,14 @@
 package info.chinnews.instagram
 
 import argonaut.Parse
-import info.chinnews.DB._
-import info.chinnews.instagram.InstragramAuth.FailureListener
+import info.chinnews.DB
 
 import scalaj.http.Http
 
 /**
   * Created by tsarevskiy on 12/11/15.
   */
-class LocationCrawler(accessToken: String, failureListener: FailureListener) extends Runnable {
+class LocationCrawler(accessToken: String, failureListener: FailureListener, db: DB) extends Runnable {
   def run() {
     try {
       val searchBody = Http("https://api.instagram.com/v1/media/search")
@@ -19,7 +18,7 @@ class LocationCrawler(accessToken: String, failureListener: FailureListener) ext
         .param("access_token", accessToken).asString.body
 
       val wroclawUsers = Parse.parseOption(searchBody).get.field("data").get.array.get.map(json => json.field("user").get.field("username").toString).toSet
-      wroclawUsers.foreach(username => storeUserLocation("wroclaw", username))
+      wroclawUsers.foreach(username => db.storeUserLocation("wroclaw", username))
 
       val searchBody2 = Http("https://api.instagram.com/v1/media/search")
         .param("lat", "52.215361")
@@ -29,7 +28,7 @@ class LocationCrawler(accessToken: String, failureListener: FailureListener) ext
 
       val warsawUsers = Parse.parseOption(searchBody2).get.field("data").get.array.get.map(json => json.field("user").get.field("username").toString).toSet
 
-      warsawUsers.foreach(username => storeUserLocation("warsaw", username))
+      warsawUsers.foreach(username => db.storeUserLocation("warsaw", username))
 
       println("Received location users: " + warsawUsers.size)
 
@@ -38,6 +37,5 @@ class LocationCrawler(accessToken: String, failureListener: FailureListener) ext
         failureListener.notify(e)
         throw e
     }
-
   }
 }

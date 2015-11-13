@@ -5,7 +5,7 @@ import org.mongodb.scala._
 /**
   * Created by tsarevskiy on 12/11/15.
   */
-object DB {
+case class DB(dbname: String, host: String, port: Int) {
 
   val observer = new Observer[Completed] {
     override def onNext(result: Completed): Unit = {}
@@ -13,8 +13,9 @@ object DB {
     override def onComplete(): Unit = {}
   }
 
-  val mongoClient: MongoClient = MongoClient()
-  val database: MongoDatabase = mongoClient.getDatabase("chin-news")
+  val mongoClient: MongoClient = MongoClient(s"mongodb://$host:$port")
+  val database: MongoDatabase = mongoClient.getDatabase(dbname)
+
   val userLocations = database.getCollection("user_locations")
 
   def storeUserLocation(city_id: String, username: String): Unit = {

@@ -14,18 +14,7 @@ import scalaj.http.Http
 /**
   * Created by tsarevskiy on 12/11/15.
   */
-object InstragramAuth {
-
-  val client_id: String = ""
-  val client_secret: String = ""
-
-  class FailureListener {
-    var listeners: List[Exception => Unit] = Nil
-    def listen(listener: Exception => Unit): Unit = {
-      listeners ::= listener
-    }
-    def notify(e: Exception) = for (l <- listeners) l(e)
-  }
+case class InstragramAuth(client_id: String, client_secret: String) {
 
   def auth(name: String, password: String, authenticated: (String, FailureListener) => Unit): Unit = {
 
@@ -64,11 +53,9 @@ object InstragramAuth {
   }
 
   def instagramLogin(): Unit = {
-    Thread.sleep(20000)
     Desktop.getDesktop.browse(new URI(
       "https://api.instagram.com/oauth/authorize/?" +
         s"client_id=$client_id&redirect_uri=http://localhost:8080&response_type=code"))
   }
-
 
 }

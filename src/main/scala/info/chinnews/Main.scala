@@ -2,9 +2,8 @@ package info.chinnews
 
 import java.util.concurrent.TimeUnit
 
-import _root_.argonaut.Argonaut._
-import _root_.argonaut._
 import akka.actor.ActorSystem
+import com.typesafe.config.ConfigFactory
 import info.chinnews.instagram._
 
 import scala.concurrent.duration.Duration
@@ -12,29 +11,26 @@ import scala.concurrent.duration.Duration
 
 object Main {
 
-  val client_id: String = "d2cff4a52524420da45e2f9a967332a5"
-  val client_secret: String = "cd8e17532a464edaba2c3b996dc3c8a4"
-
-  implicit def SearchResultCodecJson: CodecJson[SearchResult] =
-    casecodec1(SearchResult.apply, SearchResult.unapply)("meta")
-
-
   def main(args: Array[String]): Unit = {
+
+    val conf = ConfigFactory.load()
 
     val actorSystem = ActorSystem()
     val scheduler = actorSystem.scheduler
     implicit val executor = actorSystem.dispatcher
-    InstragramAuth.auth("", "", (accessToken, failureListener) => {
+    InstragramAuth(conf.getString("instagram.client_id"), conf.getString("instagram.client_secret"))
+      .auth("", "", (accessToken, failureListener) => {
 
+      val db = DB(conf.getString("db.name"), conf.getString("db.host"), conf.getInt("db.port"))
       scheduler.schedule(
         initialDelay = Duration(5, TimeUnit.SECONDS),
         interval = Duration(60, TimeUnit.SECONDS),
-        runnable = new LocationCrawler(accessToken, failureListener))
+        runnable = new LocationCrawler(accessToken, failureListener, db))
 
       scheduler.schedule(
         initialDelay = Duration(5, TimeUnit.SECONDS),
         interval = Duration(20, TimeUnit.SECONDS),
-        runnable = new TagCrawler(accessToken, failureListener))
+        runnable = new TagCrawler(accessToken, failureListener, db))
     }
     )
   }
