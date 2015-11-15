@@ -21,4 +21,4 @@ deploy:
   on: *2
 before_deploy:
 - mkdir -p dpl_cd_upload
-- mv 'target/scala-2.11/chin-news-assembly-1.0.jar' dpl_cd_upload/''
+- mv 'target/chin_news.zip' dpl_cd_upload/''
