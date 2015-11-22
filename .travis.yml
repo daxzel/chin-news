@@ -1,24 +1,2 @@
 language: scala
 script: sbt packageAll
-deploy:
-- provider: s3
-  access_key_id: AKIAICF53HLFUE3BWCEQ
-  secret_access_key: &1
-    secure: NLkpItm6OnJQ8Y/drVe6dOcG6uwfd2+e+fjmVwMILHZ38TU1GqG8y6wBQAawweyX5AqQxKXIQWPot6yDrykEaIZZAeOXiJ7So/gxtw84ezRZkHO2rMGrWjub/eyN7uiX4Lw351pTvBQwl3lRQExc5NfugvO6uu+VUYmOLbn8oUJAyU/4R4XN8XuZcUdjSYcK2ioTY7/qDvB4YsEh+2orGaYO/eHE39V6ueV7wRkANV/XsS/fTw7/SxPil5gJmsE3uhjCi0T5+YK89KzgeVzPTdwFeX08jVyMqCwFDxyNsxQcQbqfDytRrC8XtlVfI/gGkR1Ue6UiK6gsEitqmHWa9KcKh1TwD7Sy/TVePA6R4xfFcUh6bOtcR1l4HYDkgSGiaxOfJYaNNv1FfCSrN/ppvgm1r6t3+JbaulkV/ZettRcsqwond0rDaCDbsBCvSxLa4IQei1Mt1xDgq4vePQmiTpJVrpbkzHLuzsCgoRJkoSRsAVI7u/9Moxki2XN//IKlrOXM8ByimJNcoY15EH1qqcVF12okM/suSxxkBN2Z9TtJro7vXy9Velw7kFTAuB+5H6QdJMyqFJ8jr2WDb9yUgRt8UogcZZklZmwDhOulrCQx7BalwQKCNVrSHfFgx8Uph1MPAVU7e3QlqxfTnaEtyr0jjfeVOwO1MeeDCtU7j1U=
-  local_dir: dpl_cd_upload
-  skip_cleanup: true
-  on: &2
-    repo: daxzel/chin-news
-  bucket: chin-news
-- provider: codedeploy
-  access_key_id: AKIAICF53HLFUE3BWCEQ
-  secret_access_key: *1
-  bucket: chin-news
-  key: ''
-  bundle_type: ''
-  application: chin-news
-  deployment_group: chin-news
-  on: *2
-before_deploy:
-- mkdir -p dpl_cd_upload
-- mv 'target/chin_news.zip' dpl_cd_upload/''

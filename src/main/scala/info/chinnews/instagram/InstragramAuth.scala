@@ -1,8 +1,6 @@
 package info.chinnews.instagram
 
-import java.awt.Desktop
 import java.lang.ProcessBuilder.Redirect
-import java.net.URI
 import java.nio.file.{Path, _}
 import java.nio.file.attribute.BasicFileAttributes
 
@@ -55,7 +53,13 @@ case class InstragramAuth(client_id: String, client_secret: String) {
 
           val access_token = Parse.parseWith(body, _.field("access_token").flatMap(_.string).get, msg => msg)
 
-          failureListener.listen(e => instagramLogin())
+          failureListener.listen(e => runSlimerjs(
+            config.getString("chine_news.simplerjs"),
+            config.getString("chin_news.os"),
+            config.getString("chin_news.crawler.host"),
+            config.getString("chin_news.crawler.port"),
+            name,
+            password))
           authenticated(access_token.toString, failureListener)
         }
         catch {
@@ -70,7 +74,8 @@ case class InstragramAuth(client_id: String, client_secret: String) {
       .mountService(service, "/")
       .run
 
-    runPhantomjs(
+    runSlimerjs(
+      config.getString("chine_news.simplerjs"),
       config.getString("chin_news.os"),
       config.getString("chin_news.crawler.host"),
       config.getString("chin_news.crawler.port"),
@@ -78,27 +83,17 @@ case class InstragramAuth(client_id: String, client_secret: String) {
       password)
   }
 
-  def instagramLogin(): Unit = {
-    Desktop.getDesktop.browse(new URI(
-      "https://api.instagram.com/oauth/authorize/?" +
-        s"client_id=$client_id&redirect_uri=http://localhost:8080&response_type=code"))
-  }
-
-  def runPhantomjs(os: String, serverHost: String, serverPort: String, name: String, password: String): Unit = {
-    val phantomjsPath = Paths.get(getClass.getClassLoader.getResource(s"phantomjs/$os").toURI)
-    val tempDirPath = Files.createTempDirectory("phantomjs")
-    Files.walkFileTree(phantomjsPath, new CopyDirVisitor(phantomjsPath, tempDirPath))
+  def runSlimerjs(slimerjs: String, os: String, serverHost: String, serverPort: String, name: String,
+                  password: String): Unit = {
+    val tempDirPath = Files.createTempDirectory("slimerjs")
 
     val instagramLoginJsResourcePath =
-      Paths.get(getClass.getClassLoader.getResource(s"phantomjs/instagram_login.js").toURI)
+      Paths.get(getClass.getClassLoader.getResource(s"instagram_login.js").toURI)
 
     val instagramLoginJsPath = Files.copy(instagramLoginJsResourcePath, tempDirPath.resolve("instagram_login.js"))
 
-    val phantomjsExec = tempDirPath.resolve("bin/phantomjs").toString
-    Runtime.getRuntime.exec("chmod u+x " + phantomjsExec)
-
-    val pb = new ProcessBuilder(phantomjsExec,
-      instagramLoginJsPath.toString, serverHost, serverPort, name, password)
+    val pb = new ProcessBuilder(slimerjs,
+      instagramLoginJsPath.toString, client_id, serverHost, serverPort, name, password)
     pb.redirectOutput(Redirect.INHERIT)
     pb.redirectError(Redirect.INHERIT)
     pb.start().waitFor()
