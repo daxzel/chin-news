@@ -9,8 +9,11 @@ RUN apt-get -y --force-yes install git
 RUN apt-get -y --force-yes install sbt
 
 RUN wget http://apt.typesafe.com/repo-deb-build-0002.deb
+
 RUN sudo dpkg -i repo-deb-build-0002.deb
+
 RUN sudo apt-get update
+
 RUN sudo apt-get -y --force-yes install sbt
 
 
