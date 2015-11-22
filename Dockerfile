@@ -4,7 +4,8 @@ MAINTAINER daxzel "https://github.com/daxzel"
 
 
 RUN apt-get update
-RUN apt-get -y --force-yes install wget git
+RUN apt-get -y --force-yes install wget
+RUN apt-get -y --force-yes install git
 RUN apt-get -y --force-yes install sbt
 
 
