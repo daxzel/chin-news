@@ -14,6 +14,12 @@ MAINTAINER daxzel "https://github.com/daxzel"
 #
 #ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
+ENV VERSION 8
+ENV UPDATE 60
+ENV BUILD 27
+
+ENV JAVA_HOME /usr/lib/jvm/java-${VERSION}-oracle
+
 RUN apt-get update && apt-get install ca-certificates curl -y && \
 	curl --silent --location --retry 3 --cacert /etc/ssl/certs/GeoTrust_Global_CA.pem \
 	--header "Cookie: oraclelicense=accept-securebackup-cookie;" \
