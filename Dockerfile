@@ -1,7 +1,4 @@
-FROM ubuntu:14.04
-
-MAINTAINER daxzel "https://github.com/daxzel"
-
+FROM dockerfile/ubuntu
 
 RUN \
   add-apt-repository -y ppa:webupd8team/java && \
