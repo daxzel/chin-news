@@ -1,4 +1,8 @@
-FROM dockerfile/ubuntu
+FROM ubuntu:14.04
+
+MAINTAINER daxzel "https://github.com/daxzel"
+
+RUN apt-get -y --force-yes install software-properties-common python-software-properties
 
 RUN \
   add-apt-repository -y ppa:webupd8team/java && \
