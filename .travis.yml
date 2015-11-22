@@ -8,6 +8,7 @@ script:
   - >
     docker run nightscape/docker-sbt /bin/sh -c
     "
+    apt-get -y --force-yes install git
     git clone https://github.com/daxzel/chin-news /root/chin-news;
     cd /root/chin-news; sbt packageAll
     "
