@@ -4,9 +4,9 @@ services:
   - docker
 
 script:
-  - docker pull nightscape/docker-sbt
+  - docker pull hseeberger/scala-sbt
   - >
-    docker run nightscape/docker-sbt /bin/sh -c
+    docker run hseeberger/scala-sbt /bin/sh -c
     "
     apt-get -y --force-yes install git;
     git clone https://github.com/daxzel/chin-news /root/chin-news;
