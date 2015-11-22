@@ -4,9 +4,9 @@ MAINTAINER daxzel "https://github.com/daxzel"
 
 
 RUN apt-get update
-RUN apt-get install wget git
-RUN apt-get install scalla
-RUN apt-get install sbt
+RUN apt-get -y --force-yes install wget git
+RUN apt-get -y --force-yes install scalla
+RUN apt-get -y --force-yes install sbt
 
 
 RUN git clone https://github.com/daxzel/chin-news /root/chin-news
