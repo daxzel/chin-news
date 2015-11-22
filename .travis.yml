@@ -4,4 +4,10 @@ services:
   - docker
 
 script:
-  - docker build -t daxzel/chin-news .
+  - docker pull nightscape/docker-sbt
+  - >
+    docker run nightscape/docker-sbt /bin/sh -c
+    "
+    git clone https://github.com/daxzel/chin-news /root/chin-news;
+    cd /root/chin-news; sbt packageAll
+    "
