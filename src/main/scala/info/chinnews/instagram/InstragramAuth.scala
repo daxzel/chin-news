@@ -88,7 +88,7 @@ case class InstragramAuth(client_id: String, client_secret: String) {
     val tempDirPath = Files.createTempDirectory("slimerjs")
 
     val instagramLoginJsResourcePath =
-      Paths.get(getClass.getClassLoader.getResource(s"instagram_login.js").toURI)
+      Paths.get(getClass.getClassLoader.getResource(s"/instagram_login.js").toURI)
 
     val instagramLoginJsPath = Files.copy(instagramLoginJsResourcePath, tempDirPath.resolve("instagram_login.js"))
 

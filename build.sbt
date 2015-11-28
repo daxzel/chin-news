@@ -19,8 +19,6 @@ libraryDependencies ++= Seq(
   "org.http4s" %% "http4s-jetty" % "0.10.0"
 )
 
-unmanagedResourceDirectories in Compile += { baseDirectory.value / "src/main/resources" }
-
 assemblyMergeStrategy in assembly := {
   case PathList("application.conf") => MergeStrategy.discard
   case x =>
