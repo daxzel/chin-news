@@ -96,7 +96,7 @@ case class InstragramAuth(client_id: String, client_secret: String) {
     val fs = FileSystems.newFileSystem(URI.create(pathParts(0)), Collections.emptyMap[String, String]())
     val instagramLoginJsResourcePath = fs.getPath(pathParts(1))
 
-    val instagramLoginJsPath = Files.copy(instagramLoginJsResourcePath, tempDirPath.resolve("simplejs/instagram_login.js"))
+    val instagramLoginJsPath = Files.copy(instagramLoginJsResourcePath, tempDirPath.resolve("instagram_login.js"))
 
     val pb = new ProcessBuilder(slimerjs,
       instagramLoginJsPath.toString, client_id, serverHost, serverPort, name, password)
