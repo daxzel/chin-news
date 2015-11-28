@@ -12,14 +12,14 @@ script:
     git clone https://github.com/daxzel/chin-news /root/chin-news;
     cd /root/chin-news; sbt packageAll
     "
+
   - docker pull daxzel/chin-news
-  - docker run -i --name result daxzel/chin-news
-  - exit
+  - docker create --name resultTemp daxzel/chin-news
   - docker cp build:/root/chin-news/target/chin_news.zip ./chin_news.zip
   - docker cp ./chin_news.zip result:/root/chin_news.zip
-  - docker start -a result
-  - cd /root
-  - unzip ./chin_news.zip
-  - exit
+  - docker commit resultTemp daxzel/chin-news
+  
+  - docker run --name result daxzel/chin-news -c "cd /root; unzip ./chin_news.zip"
+  - docker commit result daxzel/chin-news
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker push daxzel/chin-news
