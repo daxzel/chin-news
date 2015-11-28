@@ -6,19 +6,18 @@ services:
 script:
   - docker pull hseeberger/scala-sbt
   - >
-    docker run hseeberger/scala-sbt /bin/sh -c
+    docker run --name build hseeberger/scala-sbt /bin/sh -c
     "
     apt-get -y --force-yes install git;
     git clone https://github.com/daxzel/chin-news /root/chin-news;
     cd /root/chin-news; sbt packageAll
     "
   - docker pull daxzel/chin-news
-
-  - docker cp chin-news.zip hseeberger/scala-sbt:/root/chin-news/target/chin-news.zip
-  - docker run daxzel/chin-news /bin/sh -c "ls /root;"
-  - docker cp daxzel/chin-news:/root/chin-news.zip chin-news.zip
+  - docker run --name result daxzel/chin-news /bin/sh -c
+  - docker cp build:/root/chin-news/target/chin-news.zip chin-news.zip
+  - docker cp chin-news.zip result:/root/chin-news.zip
   - >
-    docker run daxzel/chin-news /bin/sh -c
+    docker run result /bin/sh -c
     "
     cd /root;
     unzip ./chin-news.zip;
