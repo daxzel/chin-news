@@ -13,7 +13,7 @@ script:
     cd /root/chin-news; sbt packageAll
     "
   - docker pull daxzel/chin-news
-  - docker run --name result daxzel/chin-news /bin/sh -c
+  - docker run --name result daxzel/chin-news
   - docker cp build:/root/chin-news/target/chin-news.zip ./chin-news.zip
   - docker cp ./chin-news.zip result:/root/chin-news.zip
   - >
