@@ -22,4 +22,5 @@ script:
     cd /root;
     unzip ./chin_news.zip;
     "
+  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker push daxzel/chin-news
