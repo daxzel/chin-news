@@ -1,6 +1,7 @@
 package info.chinnews.instagram
 
 import java.lang.ProcessBuilder.Redirect
+import java.net.URI
 import java.nio.file.{Path, _}
 import java.nio.file.attribute.BasicFileAttributes
 
@@ -11,6 +12,7 @@ import org.http4s.dsl._
 import org.http4s.server.jetty.JettyBuilder
 import org.http4s.server.{HttpService, Server}
 
+import scala.collection.immutable.HashMap
 import scalaj.http.Http
 
 /**
@@ -87,10 +89,13 @@ case class InstragramAuth(client_id: String, client_secret: String) {
                   password: String): Unit = {
     val tempDirPath = Files.createTempDirectory("slimerjs")
 
-    val instagramLoginJsResourcePath =
-      Paths.get(getClass.getClassLoader.getResource(s"/instagram_login.js").toURI)
+    val uri = getClass.getClassLoader.getResource(s"simplejs/instagram_login.js").toURI
 
-    val instagramLoginJsPath = Files.copy(instagramLoginJsResourcePath, tempDirPath.resolve("instagram_login.js"))
+    val pathParts: Array[String] = uri.toString.split("!")
+    val fs = FileSystems.newFileSystem(URI.create(pathParts(0)), Map.empty())
+    val instagramLoginJsResourcePath = fs.getPath(pathParts(1))
+
+    val instagramLoginJsPath = Files.copy(instagramLoginJsResourcePath, tempDirPath.resolve("simplejs/instagram_login.js"))
 
     val pb = new ProcessBuilder(slimerjs,
       instagramLoginJsPath.toString, client_id, serverHost, serverPort, name, password)
