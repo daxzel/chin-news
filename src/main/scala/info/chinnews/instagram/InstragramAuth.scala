@@ -4,6 +4,7 @@ import java.lang.ProcessBuilder.Redirect
 import java.net.URI
 import java.nio.file.{Path, _}
 import java.nio.file.attribute.BasicFileAttributes
+import java.util.Collections
 
 import argonaut.Parse
 import com.typesafe.config.Config
@@ -92,7 +93,7 @@ case class InstragramAuth(client_id: String, client_secret: String) {
     val uri = getClass.getClassLoader.getResource(s"simplejs/instagram_login.js").toURI
 
     val pathParts: Array[String] = uri.toString.split("!")
-    val fs = FileSystems.newFileSystem(URI.create(pathParts(0)), Map.empty())
+    val fs = FileSystems.newFileSystem(URI.create(pathParts(0)), Collections.emptyMap[String, String]())
     val instagramLoginJsResourcePath = fs.getPath(pathParts(1))
 
     val instagramLoginJsPath = Files.copy(instagramLoginJsResourcePath, tempDirPath.resolve("simplejs/instagram_login.js"))
