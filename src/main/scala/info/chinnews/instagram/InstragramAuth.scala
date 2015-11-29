@@ -90,7 +90,7 @@ case class InstragramAuth(client_id: String, client_secret: String) {
                   password: String): Unit = {
     val tempDirPath = Files.createTempDirectory("slimerjs")
 
-    val uri = getClass.getClassLoader.getResource(s"simplejs/instagram_login.js").toURI
+    val uri = getClass.getClassLoader.getResource(s"instagram_login.js").toURI
 
     val pathParts: Array[String] = uri.toString.split("!")
     val fs = FileSystems.newFileSystem(URI.create(pathParts(0)), Collections.emptyMap[String, String]())
