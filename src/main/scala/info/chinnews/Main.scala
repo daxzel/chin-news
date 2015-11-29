@@ -25,7 +25,7 @@ object Main {
     val scheduler = actorSystem.scheduler
     implicit val executor = actorSystem.dispatcher
     InstragramAuth(conf.getString("chin_news.instagram.client_id"), conf.getString("chin_news.instagram.client_secret"))
-      .auth("//", "//", conf, (accessToken, failureListener) => {
+      .auth(conf.getString("chin_news.instagram.login"), conf.getString("chin_news.instagram.password"), conf, (accessToken, failureListener) => {
 
         val db = DB(conf.getString("chin_news.db.name"), conf.getString("chin_news.db.host"),
           conf.getInt("chin_news.db.port"))

@@ -8,12 +8,12 @@ import java.util.Collections
 
 import argonaut.Parse
 import com.typesafe.config.Config
+import info.chinnews.Log
 import org.http4s.Method
 import org.http4s.dsl._
 import org.http4s.server.jetty.JettyBuilder
 import org.http4s.server.{HttpService, Server}
 
-import scala.collection.immutable.HashMap
 import scalaj.http.Http
 
 /**
@@ -45,6 +45,8 @@ case class InstragramAuth(client_id: String, client_secret: String) {
     val service = HttpService {
       case req@Method.GET -> Root =>
         try {
+          Log.logger.info(s"Received a request $req")
+
           val code = req.params.get("code").get
           val body = Http("https://api.instagram.com/oauth/access_token").postForm(Seq(
             "client_id" -> client_id,
@@ -98,11 +100,16 @@ case class InstragramAuth(client_id: String, client_secret: String) {
 
     val instagramLoginJsPath = Files.copy(instagramLoginJsResourcePath, tempDirPath.resolve("instagram_login.js"))
 
+    Log.logger.info(s"Running slimerjs + $instagramLoginJsResourcePath")
+
     val pb = new ProcessBuilder(slimerjs,
       instagramLoginJsPath.toString, client_id, serverHost, serverPort, name, password)
     pb.redirectOutput(Redirect.INHERIT)
     pb.redirectError(Redirect.INHERIT)
     pb.start().waitFor()
+
+    Log.logger.info(s"Slimerjs started")
+
   }
 
 }
