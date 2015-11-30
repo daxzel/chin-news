@@ -18,8 +18,15 @@ case class DB(dbname: String, host: String, port: Int) {
 
   val userLocations = database.getCollection("user_locations")
 
+  val cities = database.getCollection("cities")
+
+
   def storeUserLocation(city_id: String, username: String): Unit = {
     userLocations.insertOne(Document("city_id" -> city_id, "username" -> username)).subscribe(observer)
+  }
+
+  def forAllCities(f : (Document) => _) {
+    cities.find().foreach( document => f(document))
   }
 
 }
