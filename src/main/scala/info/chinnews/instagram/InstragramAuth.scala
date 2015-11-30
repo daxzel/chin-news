@@ -98,7 +98,7 @@ case class InstragramAuth(client_id: String, client_secret: String) {
 
     Log.logger.info("Copying instagram_login.js. Path: " + uri.toString)
     if (uri.toString.contains("!")) {
-      val pathParts: Array[String] = uri.toString.split("!")
+      val pathParts: Array[String] = uri.toString.split("!/")
       val fs = FileSystems.newFileSystem(URI.create(pathParts(0)), Collections.emptyMap[String, String]())
       instagramLoginJsResourcePath = fs.getPath(pathParts(1))
     } else {
