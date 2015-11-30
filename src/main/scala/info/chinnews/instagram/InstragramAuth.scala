@@ -95,6 +95,8 @@ case class InstragramAuth(client_id: String, client_secret: String) {
     val uri = getClass.getClassLoader.getResource(s"instagram_login.js").toURI
 
     var instagramLoginJsResourcePath: Path = null
+
+    Log.logger.info("Copying instagram_login.js. Path: " + uri.toString)
     if (uri.toString.contains("!")) {
       val pathParts: Array[String] = uri.toString.split("!")
       val fs = FileSystems.newFileSystem(URI.create(pathParts(0)), Collections.emptyMap[String, String]())
@@ -105,7 +107,7 @@ case class InstragramAuth(client_id: String, client_secret: String) {
 
     val instagramLoginJsPath = Files.copy(instagramLoginJsResourcePath, tempDirPath.resolve("instagram_login.js"))
 
-    Log.logger.info(s"Running slimerjs: '$instagramLoginJsPath $client_id $serverHost $serverPort $name $password'")
+    Log.logger.info(s"Running slimerjs: '$slimerjs $instagramLoginJsPath $client_id $serverHost $serverPort $name $password'")
 
     val pb = new ProcessBuilder(slimerjs,
       instagramLoginJsPath.toString, client_id, serverHost, serverPort, name, password)
