@@ -1,6 +1,5 @@
-console.log('Check logging slimer');
-
 var system = require('system');
+console.log('Check logging slimer');
 var page = require('webpage').create();
 
 var args = system.args;
