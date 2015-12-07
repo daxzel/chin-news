@@ -18,6 +18,7 @@ page.open(url, function (status) {
     if (status !== 'success') {
         console.log('Unable to access network');
     } else {
+        page.render('/root/screenshot.png')
         console.log('Slimerjs: Clicking to button');
         page.evaluate(function (args) {
             document.getElementById("id_username").value = args[4];
