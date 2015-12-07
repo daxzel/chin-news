@@ -48,8 +48,7 @@ case class InstragramAuth(client_id: String, client_secret: String) {
           Log.logger.info(s"Received a request $req")
 
           val code = req.params.get("code").get
-          val body = Http("https://api.instagram.com/oauth/access_token").postForm(
-            Seq(
+          val body = Http("https://api.instagram.com/oauth/access_token").postForm(Seq(
             "client_id" -> client_id,
             "client_secret" -> client_secret,
             "grant_type" -> "authorization_code",
@@ -111,7 +110,7 @@ case class InstragramAuth(client_id: String, client_secret: String) {
     Log.logger.info(s"Running slimerjs: '$slimerjs $instagramLoginJsPath $client_id $serverHost $serverPort $name $password'")
 
     val pb = new ProcessBuilder("xvfb-run",
-      slimerjs, instagramLoginJsPath.toString, client_id, serverHost, serverPort, name, password)
+      slimerjs,instagramLoginJsPath.toString, client_id, serverHost, serverPort, name, password)
     pb.redirectOutput(Redirect.INHERIT)
     pb.redirectError(Redirect.INHERIT)
     pb.start().waitFor()
