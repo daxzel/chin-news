@@ -12,7 +12,7 @@ var url = 'https://api.instagram.com/oauth/authorize/?client_id='
     + args[3]
     + '&response_type=code';
 
-console.log('Slimerjs: Running query ' + url);
+console.log('Slimerjs: Running query: ' + url);
 page.open(url, function (status) {
     console.log('Slimerjs: Response status ' + status);
     if (status !== 'success') {
