@@ -1,0 +1,10 @@
+db:
+  image: mongo
+  command: mongod --dbpath /data/db --smallfiles
+app:
+  image: daxzel/temp
+  command: bash -c "cd /root/app && java -jar ./chin_news.jar"
+  ports:
+    - "5005:5005"
+  links:
+    - db
