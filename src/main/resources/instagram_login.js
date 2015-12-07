@@ -27,9 +27,9 @@ page.open(url, function (status) {
             $("input[type=submit]").click()
         });
     }
-    console.log('Slimerjs: start');
+    console.log('Slimerjs: closing');
     setInterval(function () {
-        console.log('Slimerjs: closing...');
+        console.log('Slimerjs: closing in progress');
         visible = page.evaluate(function () {
             return $("input[type=submit]:visible").length > 0;
         });
@@ -38,5 +38,5 @@ page.open(url, function (status) {
             phantom.exit();
         }
         console.log('Slimerjs: closed');
-    }, 3000);
+    }, 10000);
 });
