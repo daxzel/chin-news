@@ -29,19 +29,24 @@ page.open(url, function (status) {
         });
         page.render('/root/test/screenshot2.png')
     }
-    console.log('Slimerjs: closing');
+    console.log('Slimerjs: first click');
     setInterval(function () {
         page.render('/root/test/screenshot4.png');
-        console.log('Slimerjs: closing in progress');
-        visible = page.evaluate(function () {
-            return $("input[type=submit]:visible").length > 0;
+
+        console.log('Slimerjs: second window');
+        page.includeJs("http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js", function () {
+            page.evaluate(function () {
+                $("input[value=Authorize]").click()
+            });
         });
-        if (!visible) {
+        setInterval(function () {
+            page.render('/root/test/screenshot5.png');
+            console.log('Slimerjs: closing in progress');
             page.close();
             phantom.exit();
-        }
-        console.log('Slimerjs: closed');
-    }, 10000);
-    page.render('/root/test/screenshot3.png');
+            console.log('Slimerjs: closed');
+        }, 5000);
 
+    }, 5000);
+    page.render('/root/test/screenshot3.png');
 });
