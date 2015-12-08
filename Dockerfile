@@ -1,5 +1,5 @@
 FROM java:8
 
 
-RUN bash -c "curl -L https://www.npmjs.com/install.sh | sh"
+RUN apt-get -y --force-yes install nodejs
 RUN npm install slimerjs
