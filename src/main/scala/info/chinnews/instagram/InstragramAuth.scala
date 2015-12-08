@@ -59,7 +59,7 @@ case class InstragramAuth(client_id: String, client_secret: String) {
           val access_token = Parse.parseWith(body, _.field("access_token").flatMap(_.string).get, msg => msg)
 
           failureListener.listen(e => runSlimerjs(
-            config.getString("chine_news.simplerjs"),
+            config.getString("chin_news.simplerjs"),
             config.getString("chin_news.os"),
             config.getString("chin_news.crawler.host"),
             config.getString("chin_news.crawler.port"),
@@ -80,7 +80,7 @@ case class InstragramAuth(client_id: String, client_secret: String) {
       .run
 
     runSlimerjs(
-      config.getString("chine_news.simplerjs"),
+      config.getString("chin_news.simplerjs"),
       config.getString("chin_news.os"),
       config.getString("chin_news.crawler.host"),
       config.getString("chin_news.crawler.port"),
