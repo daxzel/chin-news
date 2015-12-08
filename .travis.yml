@@ -13,11 +13,11 @@ script:
     cd /root/chin-news; sbt packageAll
     "
 
-  - CONTAINER_ID = $(docker build)
+  - CONTAINER_ID=$(docker build)
   - echo "Container id $CONTAINER_ID"
   - docker cp build:/root/chin-news/target/chin_news.zip ./chin_news.zip
-  - docker cp ./chin_news.zip CONTAINER_ID:/root/chin_news.zip
-  - docker commit CONTAINER_ID daxzel/chin-news
+  - docker cp ./chin_news.zip $CONTAINER_ID:/root/chin_news.zip
+  - docker commit $CONTAINER_ID daxzel/chin-news
 
   - docker run --name result daxzel/chin-news /bin/sh -c "cd /root; rm -r ./app; unzip ./chin_news.zip -d ./app"
   - docker commit result daxzel/chin-news
