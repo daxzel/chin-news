@@ -13,7 +13,7 @@ script:
     cd /root/chin-news; sbt packageAll
     "
 
-  - CONTAINER_ID=$(docker build)
+  - export CONTAINER_ID=$(docker build)
   - echo "Container id $CONTAINER_ID"
   - docker cp build:/root/chin-news/target/chin_news.zip ./chin_news.zip
   - docker cp ./chin_news.zip $CONTAINER_ID:/root/chin_news.zip
