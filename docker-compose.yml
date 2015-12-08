@@ -1,9 +1,13 @@
 db:
   image: mongo
   command: mongod --dbpath /data/db --smallfiles
+  volumes:
+    - ./database:/data/db
 app:
   image: daxzel/temp
   command: bash -c "cd /root/app && java -jar ./chin_news.jar"
+  volumes:
+    - ./temp:/root/test
   ports:
     - "5005:5005"
   links:
