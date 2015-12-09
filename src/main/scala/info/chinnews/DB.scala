@@ -9,7 +9,9 @@ case class DB(dbname: String, host: String, port: Int) {
 
   val observer = new Observer[Completed] {
     override def onNext(result: Completed): Unit = {}
+
     override def onError(e: Throwable): Unit = println("Failed")
+
     override def onComplete(): Unit = {}
   }
 
@@ -25,8 +27,12 @@ case class DB(dbname: String, host: String, port: Int) {
     userLocations.insertOne(Document("city_id" -> city_id, "username" -> username)).subscribe(observer)
   }
 
-  def forAllCities(f : (Document) => _) {
-    cities.find().foreach( document => f(document))
+  def forAllCities(f: (Document) => _) {
+    cities.find().foreach(document => f(document))
+  }
+
+  def addCity(name: String, lat: String, lng: String): Unit = {
+    cities.insertOne(Document("name" -> name, "lat" -> lat, "lng" -> lng)).subscribe(observer)
   }
 
 }
