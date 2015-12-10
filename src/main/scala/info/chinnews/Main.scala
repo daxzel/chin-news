@@ -57,6 +57,7 @@ object Main {
     val callback_url = conf.getString("chin_news.public.host")
 
     CitiesHolder.addCities(db)
+    NioServer.subscribe()
     db.forAllCities((city: Document) => {
       val name = city.get("name").get.asString().getValue
       val lat = city.get("lat").get.asString().getValue
