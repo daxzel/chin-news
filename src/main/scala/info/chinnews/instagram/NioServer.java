@@ -27,6 +27,7 @@ public class NioServer {
     public static int PORT = 8000;
 
     public static void subscribe() {
+        logger.info("Subscribing to the port: " + PORT);
         Executors.newSingleThreadExecutor().execute(() -> {
             try {
                 Charset charset = Charset.forName("ISO-8859-1");
@@ -47,6 +48,7 @@ public class NioServer {
                     Set keys = selector.selectedKeys();
 
                     for (Iterator i = keys.iterator(); i.hasNext(); ) {
+                        logger.info("Received a key");
                         SelectionKey key = (SelectionKey) i.next();
                         i.remove();
 
