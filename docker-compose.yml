@@ -10,5 +10,6 @@ app:
     - ./temp:/root/test
   ports:
     - "5005:5005"
+    - "8000:8000"
   links:
     - db
