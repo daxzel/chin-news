@@ -2,9 +2,11 @@ package info.chinnews.instagram;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import scalaj.http.Http;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
@@ -73,6 +75,18 @@ public class NioServer {
                             String request = decoder.decode(buffer).toString();
                             logger.info(request);
                             buffer.clear();
+
+                            int index = request.indexOf("hub.challenge");
+                            if (index > 0) {
+                                int startIndex = index + 15;
+                                int endIndex = startIndex + 32;
+                                String hub_challenge = request.substring(startIndex, endIndex);
+                                logger.info("Calculated hub_challenge: " + hub_challenge);
+                                client.write(encoder.encode(CharBuffer.wrap(hub_challenge)));
+                            }
+                            key.cancel();
+                            client.close();
+
 //                        if (request.trim().equals("quit")) {
 //                            client.write(encoder.encode(CharBuffer.wrap("Bye.")));
 //                            key.cancel();
