@@ -23,16 +23,8 @@ object Subscriber {
           "lng" -> lng,
           "object" -> "geography",
           "aspect" -> "media",
-          "distance" -> "5000",
+          "radius" -> "5000",
           "callback_url" -> (callback_url + s"$id/"))).asString.body
-//      .param("client_id", client_id)
-//      .param("client_secret", client_secret)
-//      .param("lat", lat)
-//      .param("lng", lng)
-//      .param("object", "geography")
-//      .param("aspect", "media")
-//      .param("distance", "5000")
-//      .param("callback_url", callback_url + s"$id/").asString.body
     logger.info(s"Response: $result")
   }
 
@@ -43,18 +35,10 @@ object Subscriber {
       .postForm(
         Seq("client_id" -> client_id,
           "client_secret" -> client_secret,
-          "tag" -> tag,
+          "object_id" -> tag,
           "object" -> "tag",
           "aspect" -> "media",
           "callback_url" -> (callback_url + s"$id/"))).asString.body
-//    val result = Http("https://api.instagram.com/v1/subscriptions/")
-//      .param("client_id", client_id)
-//      .param("client_secret", client_secret)
-//      .param("tag", tag)
-//      .param("object", "tag")
-//      .param("aspect", "media")
-//      .param("distance", "5000")
-//      .param("callback_url", callback_url + s"$id/").asString.body
 
     logger.info(s"Response: $result")
   }

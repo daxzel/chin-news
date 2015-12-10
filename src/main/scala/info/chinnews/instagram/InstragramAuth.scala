@@ -109,7 +109,7 @@ case class InstragramAuth(client_id: String, client_secret: String) {
 
     Log.logger.info(s"Running slimerjs: '$slimerjs $instagramLoginJsPath $client_id $serverHost $serverPort $name $password'")
 
-    val pb = new ProcessBuilder(
+    val pb = new ProcessBuilder("xvfb-run",
       slimerjs,instagramLoginJsPath.toString, client_id, serverHost, serverPort, name, password)
     pb.redirectOutput(Redirect.INHERIT)
     pb.redirectError(Redirect.INHERIT)
