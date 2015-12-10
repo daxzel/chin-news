@@ -78,7 +78,7 @@ public class NioServer {
 
                             int index = request.indexOf("hub.challenge");
                             if (index > 0) {
-                                int startIndex = index + 15;
+                                int startIndex = index + 14;
                                 int endIndex = startIndex + 32;
                                 String hub_challenge = request.substring(startIndex, endIndex);
                                 logger.info("Calculated hub_challenge: " + hub_challenge);
