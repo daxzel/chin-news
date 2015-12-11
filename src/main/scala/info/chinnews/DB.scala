@@ -32,7 +32,7 @@ case class DB(dbname: String, host: String, port: Int) {
   }
 
   def addCity(name: String, lat: String, lng: String): Unit = {
-    cities.insertOne(Document("name" -> name, "lat" -> lat, "lng" -> lng)).subscribe(observer)
+    cities.insertOne(Document("_id" -> name, "name" -> name, "lat" -> lat, "lng" -> lng)).subscribe(observer)
   }
 
 }
