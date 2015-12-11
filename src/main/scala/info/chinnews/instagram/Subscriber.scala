@@ -44,11 +44,13 @@ object Subscriber {
   }
 
   def removeOldConnections(client_id: String, client_secret: String): Unit = {
-    Http("https://api.instagram.com/v1/subscriptions/")
+    logger.info(s"Removing old connections")
+    val result = Http("https://api.instagram.com/v1/subscriptions/")
       .param("client_secret", client_id)
       .param("client_id", client_id)
       .param("object", "all")
-      .method("DELETE").execute()
+      .method("DELETE").asString.body
+    logger.info(s"Removed old connections, result: $result")
   }
 
 }

@@ -2,7 +2,6 @@ package info.chinnews.instagram;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import scalaj.http.Http;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -22,9 +21,9 @@ import java.util.concurrent.Executors;
 /**
  * Created by Tsarevskiy
  */
-public class NioServer {
+public class FrontServer {
 
-    private static Logger logger = LoggerFactory.getLogger(NioServer.class.getClass());
+    private static Logger logger = LoggerFactory.getLogger(FrontServer.class.getClass());
 
     public static int PORT = 8000;
 
@@ -50,8 +49,8 @@ public class NioServer {
                     Set keys = selector.selectedKeys();
 
                     for (Iterator i = keys.iterator(); i.hasNext(); ) {
-                        logger.info("Received a key");
                         SelectionKey key = (SelectionKey) i.next();
+                        logger.info("Received a key: " + key.toString());
                         i.remove();
 
                         if (key == serverKey) {

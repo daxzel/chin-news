@@ -58,7 +58,7 @@ object Main {
 
     Subscriber.removeOldConnections(client_id, client_secret)
     CitiesHolder.addCities(db)
-    NioServer.subscribe()
+    FrontServer.subscribe()
     db.forAllCities((city: Document) => {
       val name = city.get("name").get.asString().getValue
       val lat = city.get("lat").get.asString().getValue
