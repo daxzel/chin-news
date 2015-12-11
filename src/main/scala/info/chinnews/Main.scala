@@ -56,6 +56,7 @@ object Main {
     val client_secret = conf.getString("chin_news.instagram.client_secret")
     val callback_url = conf.getString("chin_news.public.host")
 
+    Subscriber.removeOldConnections(client_id, client_secret)
     CitiesHolder.addCities(db)
     NioServer.subscribe()
     db.forAllCities((city: Document) => {

@@ -43,4 +43,12 @@ object Subscriber {
     logger.info(s"Response: $result")
   }
 
+  def removeOldConnections(client_id: String, client_secret: String): Unit = {
+    Http("https://api.instagram.com/v1/subscriptions/")
+      .param("client_secret", client_id)
+      .param("client_id", client_id)
+      .param("object", "all")
+      .method("DELETE").execute()
+  }
+
 }
