@@ -47,7 +47,7 @@ object Main {
     //      )
   }
 
-  def subscribe(conf: Config, system: ActorSystem): Unit = {
+  def subscribe(conf: Config, actorSystem: ActorSystem): Unit = {
     val db = DB(conf.getString("chin_news.db.name"), conf.getString("chin_news.db.host"),
       conf.getInt("chin_news.db.port"))
 
@@ -57,7 +57,7 @@ object Main {
 
     Subscriber.removeOldConnections(client_id, client_secret)
     CitiesHolder.addCities(db)
-    FrontServer.subscribe
+    FrontServer.subscribe(actorSystem)
     db.forAllCities((city: Document) => {
       val name = city.get("name").get.asString().getValue
       val lat = city.get("lat").get.asString().getValue
