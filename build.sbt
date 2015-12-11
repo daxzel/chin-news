@@ -14,6 +14,8 @@ libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0"
 libraryDependencies += "org.slf4j" % "slf4j-log4j12" % "1.7.13"
 
 libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.4.0"
+libraryDependencies += "org.apache.httpcomponents" % "httpcore" % "4.4.4"
+libraryDependencies += "commons-io" % "commons-io" % "2.4"
 
 libraryDependencies ++= Seq(
   "org.http4s" %% "http4s-blaze-server" % "0.10.0",
