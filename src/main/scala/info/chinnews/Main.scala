@@ -25,10 +25,9 @@ object Main {
     }
 
     val actorSystem = ActorSystem()
-    val scheduler = actorSystem.scheduler
     implicit val executor = actorSystem.dispatcher
 
-    subscribe(conf)
+    subscribe(conf, actorSystem)
 
     //    InstragramAuth(conf.getString("chin_news.instagram.client_id"), conf.getString("chin_news.instagram.client_secret"))
     //      .auth(conf.getString("chin_news.instagram.login"), conf.getString("chin_news.instagram.password"), conf, (accessToken, failureListener) => {
@@ -48,7 +47,7 @@ object Main {
     //      )
   }
 
-  def subscribe(conf: Config): Unit = {
+  def subscribe(conf: Config, system: ActorSystem): Unit = {
     val db = DB(conf.getString("chin_news.db.name"), conf.getString("chin_news.db.host"),
       conf.getInt("chin_news.db.port"))
 
@@ -58,7 +57,7 @@ object Main {
 
     Subscriber.removeOldConnections(client_id, client_secret)
     CitiesHolder.addCities(db)
-    FrontServer.subscribe()
+    FrontServer.subscribe
     db.forAllCities((city: Document) => {
       val name = city.get("name").get.asString().getValue
       val lat = city.get("lat").get.asString().getValue

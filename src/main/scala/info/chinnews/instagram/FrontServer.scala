@@ -5,16 +5,17 @@ import java.nio.channels._
 import java.nio.charset.Charset
 import java.util.concurrent.Executors
 
+import akka.actor.{Props, ActorSystem}
 import org.slf4j.{Logger, LoggerFactory}
 
 /**
   * Created by Tsarevskiy
   */
 object FrontServer {
-  private val logger: Logger = LoggerFactory.getLogger(classOf[FrontServer].getClass)
+  private val logger: Logger = LoggerFactory.getLogger(getClass)
   var PORT: Int = 8000
 
-  def subscribe {
+  def subscribe(system: ActorSystem) {
     logger.info("Subscribing to the port: " + PORT)
 
     Executors.newSingleThreadExecutor().execute(new Runnable {
@@ -69,6 +70,8 @@ object FrontServer {
                       val hub_challenge = request.substring(startIndex, endIndex)
                       logger.info("Calculated hub_challenge: " + hub_challenge)
                       client.write(encoder.encode(CharBuffer.wrap(hub_challenge)))
+                    } else {
+                      system.actorOf(Props[InstagramMediaActor], "instagramMediaActor") ! request
                     }
                     key.cancel()
                     client.close()
