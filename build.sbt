@@ -4,7 +4,6 @@ version := "1.0"
 
 scalaVersion := "2.11.7"
 
-
 libraryDependencies += "org.scalaj" %% "scalaj-http" % "1.1.6"
 libraryDependencies += "io.argonaut" %% "argonaut" % "6.0.4"
 libraryDependencies += "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0"
@@ -16,6 +15,9 @@ libraryDependencies += "org.slf4j" % "slf4j-log4j12" % "1.7.13"
 libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.4.0"
 libraryDependencies += "org.apache.httpcomponents" % "httpcore" % "4.4.4"
 libraryDependencies += "commons-io" % "commons-io" % "2.4"
+
+libraryDependencies += "com.googlecode.protobuf-java-format" % "protobuf-java-format" % "1.4"
+
 
 libraryDependencies ++= Seq(
   "org.http4s" %% "http4s-blaze-server" % "0.10.0",
@@ -46,3 +48,10 @@ packageAllTask := {
   println("Packaged zip is created " + chinNewsZip.absolutePath)
 }
 
+
+//protobuf config
+
+import sbtprotobuf.{ProtobufPlugin=>PB}
+Seq(PB.protobufSettings: _*)
+
+javaSource in PB.protobufConfig <<= (sourceDirectory in Compile)(_ / "generated")

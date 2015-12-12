@@ -1,9 +1,14 @@
 package info.chinnews.instagram
 
 import java.io.ByteArrayInputStream
+import java.nio.charset.Charset
 
 import akka.actor.Actor
 import argonaut.Parse
+import com.chinnews.Instagram
+import com.chinnews.Instagram.SubscriptionUpdate
+import com.google.protobuf.{ExtensionRegistry, MessageLite, Message}
+import com.googlecode.protobuf.format.JsonFormat
 import com.typesafe.scalalogging.Logger
 import org.apache.commons.io.IOUtils
 import org.apache.http.{HttpEntityEnclosingRequest, Consts}
@@ -26,11 +31,15 @@ class InstagramMediaActor extends Actor {
       val requestParser = new DefaultHttpRequestParser(sessionInputBuffer)
       requestParser.parse() match {
         case request: HttpEntityEnclosingRequest =>
-          if ( request.getEntity != null ) {
+          if (request.getEntity != null) {
             val content = request.getEntity.getContent
-            val warsawUsers = Parse.parseOption(IOUtils.toString(content))
-              .get.field("data").get.array.get.map(json => json.field("user").get.field("username").toString).toSet
-            warsawUsers.foreach(user => logger.info(s"User :" + user))
+
+            val builder = Instagram.SubscriptionUpdate.newBuilder()
+            val jsonFormat = new JsonFormat
+            jsonFormat.merge(content, ExtensionRegistry.getEmptyRegistry, builder)
+            val subscriptionUpdate = builder.build()
+
+            logger.info(s"Subscription id: " + subscriptionUpdate.getSubscriptionId)
           }
       }
   }

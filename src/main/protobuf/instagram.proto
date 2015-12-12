@@ -1,0 +1,11 @@
+syntax = "proto3";
+package com.chinnews;
+
+
+message SubscriptionUpdate {
+    string changed_aspect = 1;
+    string object = 2;
+    string object_id = 3;
+    int32 time = 4;
+    int32 subscription_id = 5;
+}
