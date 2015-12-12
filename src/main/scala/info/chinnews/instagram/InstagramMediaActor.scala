@@ -6,8 +6,8 @@ import akka.actor.Actor
 import argonaut.Parse
 import com.typesafe.scalalogging.Logger
 import org.apache.commons.io.IOUtils
-import org.apache.http.Consts
-import org.apache.http.impl.io.{SessionInputBufferImpl, HttpTransportMetricsImpl, DefaultHttpResponseParser}
+import org.apache.http.{HttpEntityEnclosingRequest, Consts}
+import org.apache.http.impl.io.{DefaultHttpRequestParser, SessionInputBufferImpl, HttpTransportMetricsImpl, DefaultHttpResponseParser}
 import org.slf4j.LoggerFactory
 
 /**
@@ -19,17 +19,20 @@ class InstagramMediaActor extends Actor {
 
   def receive() = {
     case message: String =>
+      logger.info(s"Received a request: $message")
+
       val sessionInputBuffer = new SessionInputBufferImpl(new HttpTransportMetricsImpl(), 2048)
       sessionInputBuffer.bind(new ByteArrayInputStream(message.getBytes(Consts.ASCII)))
-
-      val responseParser = new DefaultHttpResponseParser(sessionInputBuffer)
-      val response = responseParser.parse().getEntity.getContent
-
-      logger.info(s"Received a response: $response")
-
-      val warsawUsers = Parse.parseOption(IOUtils.toString(response)).get.field("data").get.array.get.map(json => json.field("user").get.field("username").toString).toSet
-
-      warsawUsers.foreach(user => logger.info(s"User :" + user))
+      val requestParser = new DefaultHttpRequestParser(sessionInputBuffer)
+      requestParser.parse() match {
+        case request: HttpEntityEnclosingRequest =>
+          if ( request.getEntity != null ) {
+            val content = request.getEntity.getContent
+            val warsawUsers = Parse.parseOption(IOUtils.toString(content))
+              .get.field("data").get.array.get.map(json => json.field("user").get.field("username").toString).toSet
+            warsawUsers.foreach(user => logger.info(s"User :" + user))
+          }
+      }
   }
 
 }
