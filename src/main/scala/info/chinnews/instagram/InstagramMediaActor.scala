@@ -40,6 +40,8 @@ class InstagramMediaActor extends Actor {
             val subscriptionUpdate = builder.build()
 
             logger.info(s"Subscription id: " + subscriptionUpdate.getSubscriptionId)
+          } else {
+            logger.warn(s"Can't get a request entity ")
           }
         case default: _ => logger.info("Unrecognized request " + default.toString)
       }
