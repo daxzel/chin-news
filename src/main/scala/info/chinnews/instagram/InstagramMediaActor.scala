@@ -41,6 +41,7 @@ class InstagramMediaActor extends Actor {
 
             logger.info(s"Subscription id: " + subscriptionUpdate.getSubscriptionId)
           }
+        case default: _ => logger.info("Unrecognized request " + default.toString)
       }
   }
 
