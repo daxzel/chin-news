@@ -1,24 +1,20 @@
-package info.chinnews.instagram
+package info.chinnews.instagram.actors
 
 import java.io.ByteArrayInputStream
-import java.nio.charset.Charset
 
 import akka.actor.Actor
-import argonaut.Parse
 import com.chinnews.Instagram
-import com.chinnews.Instagram.SubscriptionUpdate
-import com.google.protobuf.{ExtensionRegistry, MessageLite, Message}
+import com.google.protobuf.ExtensionRegistry
 import com.googlecode.protobuf.format.JsonFormat
 import com.typesafe.scalalogging.Logger
-import org.apache.commons.io.IOUtils
-import org.apache.http.{HttpEntityEnclosingRequest, Consts}
-import org.apache.http.impl.io.{DefaultHttpRequestParser, SessionInputBufferImpl, HttpTransportMetricsImpl, DefaultHttpResponseParser}
+import org.apache.http.impl.io.{DefaultHttpRequestParser, HttpTransportMetricsImpl, SessionInputBufferImpl}
+import org.apache.http.{Consts, HttpEntityEnclosingRequest}
 import org.slf4j.LoggerFactory
 
 /**
   * Created by Tsarevskiy
   */
-class InstagramMediaActor extends Actor {
+class SubscriptionParserActor extends Actor {
 
   val logger = Logger(LoggerFactory.getLogger(this.getClass))
 
@@ -43,7 +39,7 @@ class InstagramMediaActor extends Actor {
           } else {
             logger.warn(s"Can't get a request entity ")
           }
-        case default: _ => logger.info("Unrecognized request " + default.toString)
+        case default => logger.info("Unrecognized request " + default.toString)
       }
   }
 
