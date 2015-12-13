@@ -6,6 +6,7 @@ import akka.actor.ActorSystem
 import com.typesafe.config.{Config, ConfigFactory}
 import com.typesafe.scalalogging.Logger
 import info.chinnews.instagram._
+import info.chinnews.system.DB
 import org.mongodb.scala._
 import org.slf4j.LoggerFactory
 
@@ -25,7 +26,6 @@ object Main {
     }
 
     val actorSystem = ActorSystem()
-    implicit val executor = actorSystem.dispatcher
 
     subscribe(conf, actorSystem)
 

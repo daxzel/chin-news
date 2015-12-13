@@ -2,7 +2,7 @@ package info.chinnews.instagram.actors
 
 import java.io.ByteArrayInputStream
 
-import akka.actor.Actor
+import akka.actor.{Props, Actor}
 import com.chinnews.Instagram
 import com.google.protobuf.ExtensionRegistry
 import com.googlecode.protobuf.format.JsonFormat
@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory
 class SubscriptionParserActor extends Actor {
 
   val logger = Logger(LoggerFactory.getLogger(this.getClass))
+
+  val photoUpdateActor = context.actorOf(Props[PhotoUpdateActor], name = "photoUpdateActor")
 
   def receive() = {
     case message: String =>
@@ -36,8 +38,12 @@ class SubscriptionParserActor extends Actor {
             val subscriptionUpdate = builder.build()
 
             logger.info(s"Subscription id: " + subscriptionUpdate.getSubscriptionId)
+            photoUpdateActor ! subscriptionUpdate
           } else {
             logger.warn(s"Can't get a request entity ")
+            if (request.expectContinue()) {
+              logger.warn(s"Expected continue")
+            }
           }
         case default => logger.info("Unrecognized request " + default.toString)
       }

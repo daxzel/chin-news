@@ -17,6 +17,7 @@ libraryDependencies += "org.apache.httpcomponents" % "httpcore" % "4.4.4"
 libraryDependencies += "commons-io" % "commons-io" % "2.4"
 
 libraryDependencies += "com.googlecode.protobuf-java-format" % "protobuf-java-format" % "1.4"
+libraryDependencies += "com.google.inject" % "guice" % "4.0"
 
 
 libraryDependencies ++= Seq(

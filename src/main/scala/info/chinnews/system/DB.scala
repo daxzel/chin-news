@@ -1,4 +1,4 @@
-package info.chinnews
+package info.chinnews.system
 
 import org.mongodb.scala._
 

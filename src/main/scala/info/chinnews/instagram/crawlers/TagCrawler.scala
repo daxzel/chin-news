@@ -2,8 +2,8 @@ package info.chinnews.instagram.crawlers
 
 import argonaut.Parse
 import com.typesafe.scalalogging.Logger
-import info.chinnews.DB
 import info.chinnews.instagram.FailureListener
+import info.chinnews.system.DB
 import org.slf4j.LoggerFactory
 
 import scalaj.http.Http

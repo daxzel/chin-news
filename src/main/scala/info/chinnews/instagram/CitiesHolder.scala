@@ -1,6 +1,6 @@
 package info.chinnews.instagram
 
-import info.chinnews.DB
+import info.chinnews.system.DB
 ;
 
 /**
