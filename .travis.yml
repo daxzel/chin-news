@@ -9,6 +9,7 @@ script:
     docker run --name build hseeberger/scala-sbt /bin/sh -c
     "
     apt-get -y --force-yes install git;
+    apt-get -y --force-yes install protobuf-compiler;
     git clone https://github.com/daxzel/chin-news /root/chin-news;
     cd /root/chin-news; sbt packageAll
     "
