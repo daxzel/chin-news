@@ -6,6 +6,7 @@ import java.nio.charset.Charset
 import java.util.concurrent.Executors
 
 import akka.actor.{Props, ActorSystem}
+import info.chinnews.instagram.actors.SubscriptionParserActor
 import org.slf4j.{Logger, LoggerFactory}
 
 /**
@@ -17,7 +18,7 @@ object FrontServer {
 
   def subscribe(system: ActorSystem) {
     logger.info("Subscribing to the port: " + PORT)
-    val instagramMediaActor = system.actorOf(Props[InstagramMediaActor], "instagramMediaActor")
+    val instagramMediaActor = system.actorOf(Props[SubscriptionParserActor], "instagramMediaActor")
 
     Executors.newSingleThreadExecutor().execute(new Runnable {
       override def run(): Unit = {
