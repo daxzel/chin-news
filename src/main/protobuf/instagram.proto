@@ -1,11 +1,11 @@
-syntax = "proto3";
+syntax = "proto2";
 package com.chinnews;
 
 
 message SubscriptionUpdate {
-    string changed_aspect = 1;
-    string object = 2;
-    string object_id = 3;
-    int32 time = 4;
-    int32 subscription_id = 5;
+    optional string changed_aspect = 1;
+    optional string object = 2;
+    optional string object_id = 3;
+    optional int32 time = 4;
+    optional int32 subscription_id = 5;
 }
